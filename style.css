@@ -7,16 +7,20 @@ html {
     z-index: 0;
     display: block;
     margin: 0 auto;
-    width: 21rem;
-    height: 26rem;  
+    width: 500px;
+    height: 750px;  
 }
 
 .calculator-body {
     border: 2px solid black; 
-    width: 20rem; 
-    height: 25rem; 
+    width: 95%; 
+    height: 95%; 
     margin: 0 auto; 
-    display: block; 
+    display: grid;
+    grid-template-rows: 1.5fr 1fr 1fr 1fr 1fr 1fr; 
+    row-gap: .5rem;
+    column-gap: .5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
 }
 
 .calculator-buttons {
@@ -24,6 +28,8 @@ html {
 }
 
 .display {
+    display: grid; 
+    grid-column: 1 / span 4; 
     border: 1px solid red; 
     width: 90%; 
     height: 15%; 
