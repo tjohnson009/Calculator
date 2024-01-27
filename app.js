@@ -12,23 +12,25 @@ class Calculator {
         this.b = ''; 
     }
 
-    add = (a, b) => {
-        return a + b; 
+    add = () => {
+        return this.a + this.b; 
     }
 
-    subtract = (a, b) => {
-        return a - b; 
+    subtract = () => {
+        return this.a - this.b; 
     };
 
-    multiply = (a, b) => {
-        return a * b; 
+    multiply = () => {
+        return this.a * this.b; 
     }
 
-    divide = (a, b) => {
-        if (b !== 0) {
-            return a / b;  
+    divide = () => {
+        if (this.b !== 0) {
+            return this.a / this.b;  
         } else {
             return `Error!`; 
+            // clear everything after this. 
+            // output = error
         }
     }
 
@@ -66,9 +68,16 @@ class Button {
 }
 
 const clearDelete = () => {
+    // clear input
+    // clear output
+    // clear "a"
+    // clear "b"
+    // cl;ear operator
 
 }
 
 const addDecimal = () => {
 
 }
+
+let calculator = new Calculator(document.getElementById('calculator'))
