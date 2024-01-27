@@ -42,24 +42,33 @@ class Calculator {
 }
 
 class Button {
-    constructor(element, value) {
+    constructor(element, value, callback) {
         this.element = element; 
         this.value = value; 
+        this.callback = callback; 
     }
 
     addToInput = () => {
         
     }
 
-    addClickListener(callback) {
-        this.element.addEventListener('click', callback)
+    addClickListener() {
+        this.element.addEventListener('click', this.callback)
     }
 
-    addKeypressListener(callback, keyCode) {
+    addKeypressListener( keyCode) {
         this.element.addEventListener('keypress', () => {
             if (e.target.keyCode === keyCode) {
-                callback(); 
+                this.callback(); 
             }
         })
     }
+}
+
+const clearDelete = () => {
+
+}
+
+const addDecimal = () => {
+
 }
