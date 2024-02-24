@@ -1,5 +1,6 @@
 html {
     /* font-size: 20px; */
+    background-color: rgb(98, 95, 95);
 }
 
 /* .calculator-outerBody {
@@ -37,9 +38,10 @@ html {
     column-gap: .75rem;
     grid-template-columns: repeat(4, 1fr);
     padding: 1rem;
+    /* border: 1px red solid;  */
 }
 
-.calculator-buttons {
+.calculator-buttons, #percentage {
     font-size: 2rem;
     background-color: rgb(66, 126, 142);
     color: white;
@@ -49,8 +51,16 @@ html {
     transition: background-color 0.3s ease;
 }
 
-.calculator-buttons:hover {
+.calculator-buttons[data-type="operator"] {
     background-color: rgb(34, 127, 87);
+}
+
+.calculator-buttons:hover, #percentage:hover {
+    background-color: rgb(34, 127, 87);
+}
+
+.calculator-buttons[data-type="operator"]:hover {
+    background-color: rgb(66, 126, 142);
 }
 
 .display {
