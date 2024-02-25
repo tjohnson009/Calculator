@@ -43,6 +43,27 @@ class Calculator {
             this.input += '.';
         }
     }
+    clearDelete() {
+        // // clear input
+        // DOM.input = ''; 
+        // // clear output
+        // DOM.output = ''; 
+        // // clear "a"
+        // this.a = ''
+        // // clear "b"
+        // this.b = ''
+        // // clear operator
+        // this.operator = ''
+        for (key in this) {
+            if (key !== this.element) {
+                this[key] = ''; 
+            }
+        }
+    }
+    updateDisplay() {
+        DOM.input = `${this.a} ${this.operator} ${this.b}`;
+        DOM.output = `${this.output}`; 
+    }
 
     updateInput = (newInput) => {
         return this.input = newInput; 
@@ -54,16 +75,21 @@ class Calculator {
 
 class Button { // perhaps have a number button class that extends button, same with operator
 // can get all the buttons on the dom, loop through and create new button instances
-    constructor(element, value) {
+    constructor(element, value, callback) {
         this.element = element; 
         this.value = value; 
-        // this.callback = callback; 
+        this.element.addEventListener('click', (e) => {
+            // console.log(`You clicked ${this.value}.`); 
+            this.callback(this.value); 
+        }); 
+        this.callback = this.handleClick; 
     }
         
-    handleClick(value) {
-        calculator.input += value; 
-        DOM.input.innerHTML = this.input; 
-        console.log(calculator); 
+    handleClick() {
+        console.log(`You clicked the ${this.value} button.`); 
+        // calculator.input += value; 
+        // DOM.input.innerHTML = this.input; 
+        // console.log(calculator); 
     }
 
     // this.element.addEventListener('click', (e) => {
@@ -83,38 +109,22 @@ class Button { // perhaps have a number button class that extends button, same w
     // })
 }
 
-    addToInput = () => {
-        
-    }
-
-    // addClickListener() {
-    //     this.element.addEventListener('click', this.callback)
-    // }
-
-    // addKeypressListener(keyCode) {
-    //     this.element.addEventListener('keypress', () => {
-    //         if (e.target.keyCode === keyCode) {
-    //             this.callback(); 
-    //         }
-    //     })
-    // }
-
-
-class Number extends Button {
+class NumberButton extends Button {
     constructor(element, value) {
         super(element, value);
+        this.callback = () => {
+            // console.log(`NumberButton callback`); 
+            this.handleClick(); 
+        }
     }
 
     handleClick() {
-        if (calculator.operator === "") {
-            calculator.a += this.value; 
-            console.log(calculator); 
-        }
+        console.log(`You clicked the ${this.value} button.`)
     }
 
     addToAorB(e) {
         if (e.target.attributes["data-type"].value === 'number') {
-            console.log(e); 
+            // console.log(e); 
             // if (calculator.operator === '') {
             //     calculator.a += e.target.value; 
             // }
@@ -122,27 +132,45 @@ class Number extends Button {
     }
 }
 
-const clearDelete = () => {
-    // clear input
-    DOM.input = ''; 
-    // clear output
-    DOM.output = ''; 
-    // clear "a"
-    // clear "b"
-    // clear operator
+class OperatorButton extends Button {
+    constructor(element, value) {
+        super(element, value);
+        this.callback = () => {
+            // console.log(`NumberButton callback`); 
+            this.handleClick(); 
+        }
+    }
+
+    handleClick() {
+        console.log(`You clicked the ${this.value} button.`)
+    }
+
+    addToAorB(e) {
+        if (e.target.attributes["data-type"].value === 'number') {
+            // console.log(e); 
+            // if (calculator.operator === '') {
+            //     calculator.a += e.target.value; 
+            // }
+        }
+    }
 }
 
 
-let calculator = new Calculator(document.getElementById('calculator'))
+
+let calculator = new Calculator(document.getElementById('calculator')); 
 let numbers = Array.from(document.querySelectorAll('.calculator-buttons[data-type=number]')); 
 numbers.forEach(number => {
-    new Number(number, number.value); 
-    console.log(number); 
+    number.classList.add('number'); 
+    new NumberButton(number, number.value); 
+    // console.log(number); 
     // new Button(button, button.value); 
-    number.addEventListener('click', e => console.log(e))
     
 })
-
-DOM.input.addEventListener('onchange', (e) => {
-    console.log('111'); 
+let nonNumbers = Array.from(document.querySelectorAll('.calculator-buttons:not(.number)'))
+nonNumbers.forEach(non => {
+    console.log(non); 
 })
+
+// DOM.input.addEventListener('onchange', (e) => {
+//     console.log('111'); 
+// })
