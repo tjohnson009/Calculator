@@ -3,25 +3,30 @@ let DOM = {
     output: document.querySelector('#output'), 
 }; 
 
+// Abstraction
+// Encapsulation
+// Inheritance
+// Polymorphism
+
 class Calculator {
     constructor(element) {
-        this.element = element; 
+        this.element = element; // is this necessary?
         this.input = ''; // listen for change here to update dom input
         this.output = '';  // ""
         this.a = ''; 
         this.operator = ''; 
         this.b = ''; 
     }
-    add = () => {
+    add() {
         return this.a + this.b; 
     }
-    subtract = () => {
+    subtract() {
         return this.a - this.b; 
     };
-    multiply = () => {
+    multiply() {
         return this.a * this.b; 
     }
-    divide = () => {
+    divide() {
         if (this.b !== 0) {
             return this.a / this.b;  
         } else {
@@ -30,16 +35,20 @@ class Calculator {
             // output = error
         }
     }
+    percent(number) {
+        return number * .01; 
+    }
+    addDecimal(number) {
+        if (!Array.from(number).split('').includes('.')) {
+            this.input += '.';
+        }
+    }
+
     updateInput = (newInput) => {
         return this.input = newInput; 
     }
     updateOutput = () => {
 
-    }
-    addDecimal = () => {
-        if (!Array.from(this.input).split('').includes('.')) {
-            this.input += '.';
-        }
     }
 }
 
@@ -49,11 +58,16 @@ class Button { // perhaps have a number button class that extends button, same w
         this.element = element; 
         this.value = value; 
         // this.callback = callback; 
-        this.element.addEventListener('click', (e) => {
-            // add to value of button to input f(x) 
-            calculator.input += e.target.value; 
-            DOM.input.innerHTML += e.target.value; 
+    }
+        
+    handleClick(value) {
+        calculator.input += value; 
+        DOM.input.innerHTML = this.input; 
+        console.log(calculator); 
+    }
 
+    // this.element.addEventListener('click', (e) => {
+            // add to value of button to input f(x) 
 
             // if (e.target.attributes["data-type"].value === 'number' && calculator.operator === '') {
             //     calculator.a += e.target.value; 
@@ -66,8 +80,7 @@ class Button { // perhaps have a number button class that extends button, same w
             //     calculator.operator += e.target.value; 
             // } else if (e.target.attributes["data-type"].value === "operator" && calculator.operator !== '') {    
             // }
-            console.log(calculator); 
-    })
+    // })
 }
 
     addToInput = () => {
@@ -85,6 +98,28 @@ class Button { // perhaps have a number button class that extends button, same w
     //         }
     //     })
     // }
+
+
+class Number extends Button {
+    constructor(element, value) {
+        super(element, value);
+    }
+
+    handleClick() {
+        if (calculator.operator === "") {
+            calculator.a += this.value; 
+            console.log(calculator); 
+        }
+    }
+
+    addToAorB(e) {
+        if (e.target.attributes["data-type"].value === 'number') {
+            console.log(e); 
+            // if (calculator.operator === '') {
+            //     calculator.a += e.target.value; 
+            // }
+        }
+    }
 }
 
 const clearDelete = () => {
@@ -99,12 +134,15 @@ const clearDelete = () => {
 
 
 let calculator = new Calculator(document.getElementById('calculator'))
-let buttons = Array.from(document.querySelectorAll('.calculator-buttons')); 
-buttons.forEach(button => {
-    // console.log(button); 
-    new Button(button, button.value); 
+let numbers = Array.from(document.querySelectorAll('.calculator-buttons[data-type=number]')); 
+numbers.forEach(number => {
+    new Number(number, number.value); 
+    console.log(number); 
+    // new Button(button, button.value); 
+    number.addEventListener('click', e => console.log(e))
+    
 })
 
-DOM.input.addEventListener('change', (e) => {
+DOM.input.addEventListener('onchange', (e) => {
     console.log('111'); 
 })
