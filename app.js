@@ -38,9 +38,19 @@ class Calculator {
     percent(number) {
         return number * .01; 
     }
-    addDecimal(number) {
-        if (!Array.from(number).split('').includes('.')) {
-            this.input += '.';
+    addDecimal() {
+        // if (!Array.from(number).split('').includes('.')) {
+        //     this.input += '.';
+        // }
+        if (this.operator === '') {
+            if (!Array.from((this.a).split('')).includes('.'))
+            this.a += '.'; 
+        } else {
+            if (this.b !== '') {
+                if (!Array.from((this.a).split('')).includes('.')) {
+                    this.b += '.'; 
+                }
+            }
         }
     }
     negate() {
@@ -126,6 +136,16 @@ class Button { // perhaps have a number button class that extends button, same w
         // adds value to the calculator input
         calculator.input += this.element.value; 
         DOM.inputElement.innerHTML += this.element.value; 
+        if (this.value === '.') {
+            // if (calculator.operator === '') {
+            //     calculator.a += '.'; 
+            // } else {
+            //     if (calculator.b !== '') {
+            //         calculator.b += '.'; 
+            //     }
+            // }
+            calculator.addDecimal(); 
+        }
         // calculator.updateInput(); 
         // calculator.updateDOM(); 
         if (calculator.getPreppedInput().includes('clear')) {
