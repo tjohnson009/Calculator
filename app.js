@@ -1,6 +1,6 @@
 let DOM = {
-    input: document.querySelector('#input'), 
-    output: document.querySelector('#output'), 
+    inputElement: document.querySelector('#input'), 
+    outputElement: document.querySelector('#output'), 
 }; 
 
 // Abstraction
@@ -11,7 +11,7 @@ let DOM = {
 class Calculator {
     constructor(element) {
         this.element = element; // is this necessary?
-        this.input = ''; // listen for change here to update dom input
+        this.input = ''; 
         this.output = '';  // ""
         this.a = ''; 
         this.operator = ''; 
@@ -43,34 +43,58 @@ class Calculator {
             this.input += '.';
         }
     }
-    clearDelete() {
-        // // clear input
-        // DOM.input = ''; 
-        // // clear output
-        // DOM.output = ''; 
-        // // clear "a"
-        // this.a = ''
-        // // clear "b"
-        // this.b = ''
-        // // clear operator
-        // this.operator = ''
+    negate() {
+        
+    }
+    clear() {
         for (let key in this) {
             if (key !== this.element) {
                 this[key] = ''; 
             }
         }
-        calculator.input = 0;
-        DOM.input.innerHTML = calculator.input; 
-        DOM.output.innerHTML = calculator.output; 
-
+        calculator.input = "0";
+        DOM.inputElement.innerHTML = calculator.input; 
+        DOM.outputElement.innerHTML = calculator.output; 
     }
-    updateDisplay() {
-        DOM.input = `${this.a} ${this.operator} ${this.b}`;
-        DOM.output = `${this.output}`; 
+    back() {
+        let inputArray = calculator.getPreppedInput(); // array
+        if (this.input !== 0) {
+            // get the input into an array
+            // split on ' ' 
+            if (inputArray.includes('back')) {
+                // clear the back word and whatever is before the back word
+                    // get index of 'back'
+                    let index = inputArray.indexOf('back'); 
+                    console.log('Before splice:',inputArray);
+                    inputArray.splice(index, 1); // deletes the word back
+                    console.log('After splice:', inputArray); 
+                    // deletes the last item off the input that came before the word back
+                    let inputLettersArray = inputArray[0].split(''); 
+                    inputLettersArray.splice(inputLettersArray.length - 2, 1);;  
+                    let newInput = inputLettersArray.join(''); 
+                    this.input = newInput; 
+                    DOM.inputElement.innerHTML = newInput; 
+                    // this.updateDOM(); 
+                // set the input to the corrected input
+                // DOM
+            }
+        }
+    }
+    updateInput() {
+        
+    }
+    updateDOM() {
+        // DOM.inputElement = `${this.a} ${this.operator} ${this.b}`;
+        DOM.inputElement.innerHTML = this.input; 
+        DOM.outputElement = `${this.output}`; 
     }
 
     operate() {
 
+    }
+
+    getPreppedInput() {
+        return Array.from((this.input).split(' ')); 
     }
 
     // updateInput = (newInput) => {
@@ -94,10 +118,18 @@ class Button { // perhaps have a number button class that extends button, same w
         
     handleClick() {
         // console.log(`You clicked the ${this.value} button.`); // working properly
+        if (DOM.inputElement.innerHTML == 0 || DOM.inputElement.innerHTML == '0') {
+            DOM.inputElement.innerHTML = ''; 
+            calculator.input = ''; 
+        }
         calculator.input += this.element.value; 
-        DOM.input.innerHTML += this.element.value; 
-        if (Array.from((calculator.input).split(' ')).includes('clear')) {
-            calculator.clearDelete(); 
+            DOM.inputElement.innerHTML += this.element.value; 
+        if (calculator.getPreppedInput().includes('clear')) {
+            calculator.clear(); 
+            // console.log(calculator); 
+        }
+        if (calculator.getPreppedInput().includes('back')) {
+            calculator.back(); 
         }
         console.log(calculator); 
         // console.log(Array.from((calculator.input).split(' '))); 
