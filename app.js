@@ -54,23 +54,30 @@ class Calculator {
         // this.b = ''
         // // clear operator
         // this.operator = ''
-        for (key in this) {
+        for (let key in this) {
             if (key !== this.element) {
                 this[key] = ''; 
             }
         }
+        calculator.input = 0;
+        DOM.input.innerHTML = calculator.input; 
+        DOM.output.innerHTML = calculator.output; 
+
     }
     updateDisplay() {
         DOM.input = `${this.a} ${this.operator} ${this.b}`;
         DOM.output = `${this.output}`; 
     }
 
-    updateInput = (newInput) => {
-        return this.input = newInput; 
-    }
-    updateOutput = () => {
+    operate() {
 
     }
+
+    // updateInput = (newInput) => {
+    //     return this.input = newInput; 
+    // }
+    // updateOutput = () => {
+    // }
 }
 
 class Button { // perhaps have a number button class that extends button, same with operator
@@ -86,10 +93,14 @@ class Button { // perhaps have a number button class that extends button, same w
     }
         
     handleClick() {
-        console.log(`You clicked the ${this.value} button.`); 
-        // calculator.input += value; 
-        // DOM.input.innerHTML = this.input; 
-        // console.log(calculator); 
+        // console.log(`You clicked the ${this.value} button.`); // working properly
+        calculator.input += this.element.value; 
+        DOM.input.innerHTML += this.element.value; 
+        if (Array.from((calculator.input).split(' ')).includes('clear')) {
+            calculator.clearDelete(); 
+        }
+        console.log(calculator); 
+        // console.log(Array.from((calculator.input).split(' '))); 
     }
 
     // this.element.addEventListener('click', (e) => {
@@ -119,7 +130,7 @@ class NumberButton extends Button {
     }
 
     handleClick() {
-        console.log(`You clicked the ${this.value} button.`)
+        console.log(`You clicked the number ${this.value} button.`)
     }
 
     addToAorB(e) {
@@ -142,20 +153,10 @@ class OperatorButton extends Button {
     }
 
     handleClick() {
-        console.log(`You clicked the ${this.value} button.`)
+        console.log(`You clicked the ${this.value} operator button.`)
     }
 
-    addToAorB(e) {
-        if (e.target.attributes["data-type"].value === 'number') {
-            // console.log(e); 
-            // if (calculator.operator === '') {
-            //     calculator.a += e.target.value; 
-            // }
-        }
-    }
 }
-
-
 
 let calculator = new Calculator(document.getElementById('calculator')); 
 let numbers = Array.from(document.querySelectorAll('.calculator-buttons[data-type=number]')); 
@@ -166,11 +167,17 @@ numbers.forEach(number => {
     // new Button(button, button.value); 
     
 })
-let nonNumbers = Array.from(document.querySelectorAll('.calculator-buttons:not(.number)'))
-nonNumbers.forEach(non => {
-    console.log(non); 
+let operators = Array.from(document.querySelectorAll('.calculator-buttons[data-type=operator]'))
+operators.forEach(operator => {
+    operator.classList.add('operator'); 
+    new OperatorButton(operator, operator.value); 
 })
 
+let otherButtons = Array.from(document.querySelectorAll('.calculator-buttons:not(.number):not(.operator)'))
+otherButtons.forEach(other => {
+    other.classList.add('operator'); 
+    new Button(other, other.value); 
+})
 // DOM.input.addEventListener('onchange', (e) => {
 //     console.log('111'); 
 // })
