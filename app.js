@@ -44,7 +44,7 @@ class Calculator {
         }
     }
     negate() {
-        
+
     }
     clear() {
         for (let key in this) {
@@ -70,7 +70,7 @@ class Calculator {
                     console.log('After splice:', inputArray); 
                     // deletes the last item off the input that came before the word back
                     let inputLettersArray = inputArray[0].split(''); 
-                    inputLettersArray.splice(inputLettersArray.length - 2, 1);;  
+                    inputLettersArray.splice(inputLettersArray.length - 1, 1); 
                     let newInput = inputLettersArray.join(''); 
                     this.input = newInput; 
                     DOM.inputElement.innerHTML = newInput; 
@@ -81,18 +81,18 @@ class Calculator {
         }
     }
     updateInput() {
-        
+        calculator.input = `${this.a}${this.operator}${this.b}`;
     }
     updateDOM() {
-        // DOM.inputElement = `${this.a} ${this.operator} ${this.b}`;
+        // DOM.inputElement = `${this.a}${this.operator}${this.b}`;
         DOM.inputElement.innerHTML = this.input; 
-        DOM.outputElement = `${this.output}`; 
+        DOM.outputElement.innerHTML = `${this.output}`; 
     }
-
     operate() {
 
     }
 
+    // Getters
     getPreppedInput() {
         return Array.from((this.input).split(' ')); 
     }
@@ -118,12 +118,16 @@ class Button { // perhaps have a number button class that extends button, same w
         
     handleClick() {
         // console.log(`You clicked the ${this.value} button.`); // working properly
+        // remove the 0 placeholder
         if (DOM.inputElement.innerHTML == 0 || DOM.inputElement.innerHTML == '0') {
             DOM.inputElement.innerHTML = ''; 
             calculator.input = ''; 
         }
+        // adds value to the calculator input
         calculator.input += this.element.value; 
-            DOM.inputElement.innerHTML += this.element.value; 
+        DOM.inputElement.innerHTML += this.element.value; 
+        // calculator.updateInput(); 
+        // calculator.updateDOM(); 
         if (calculator.getPreppedInput().includes('clear')) {
             calculator.clear(); 
             // console.log(calculator); 
@@ -132,7 +136,6 @@ class Button { // perhaps have a number button class that extends button, same w
             calculator.back(); 
         }
         console.log(calculator); 
-        // console.log(Array.from((calculator.input).split(' '))); 
     }
 
     // this.element.addEventListener('click', (e) => {
@@ -162,16 +165,22 @@ class NumberButton extends Button {
     }
 
     handleClick() {
-        console.log(`You clicked the number ${this.value} button.`)
+        // console.log(`You clicked the number ${this.value} button.`) // works properly
+        this.addToAorB(); 
+        calculator.updateInput(); 
+        calculator.updateDOM(); 
     }
 
-    addToAorB(e) {
-        if (e.target.attributes["data-type"].value === 'number') {
-            // console.log(e); 
-            // if (calculator.operator === '') {
-            //     calculator.a += e.target.value; 
-            // }
-        }
+    addToAorB() {
+        // if (e.target.attributes["data-type"].value === 'number') {
+            if (calculator.operator === '') {
+                calculator.a += this.value; 
+                console.log(calculator); 
+            } else {
+                calculator.b += this.value; 
+                console.log(calculator); 
+            }
+        // }
     }
 }
 
