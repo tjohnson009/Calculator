@@ -80,31 +80,56 @@ class Calculator {
         DOM.outputElement.innerHTML = calculator.output; 
     }
     back() {
-        // calculator.input based approach
-        let inputArray = calculator.getPreppedInput(); // array
-        if (this.input !== 0) {
-            // get the input into an array
-            // split on ' ' 
-            if (inputArray.includes('back')) {
-                // clear the back word and whatever is before the back word
-                    // get index of 'back'
-                    let index = inputArray.indexOf('back'); 
-                    console.log('Before splice:',inputArray);
-                    inputArray.splice(index, 1); // deletes the word back
-                    console.log('After splice:', inputArray); 
-                    // deletes the last item off the input that came before the word back
-                    let inputLettersArray = inputArray[0].split(''); 
-                    inputLettersArray.splice(inputLettersArray.length - 1, 1); 
-                    let newInput = inputLettersArray.join(''); 
-                    this.input = newInput; 
-                    DOM.inputElement.innerHTML = newInput; 
-                    // this.updateDOM(); 
-                // set the input to the corrected input
-                // DOM
+    // // calculator.input based approach
+        // let inputArray = this.getPreppedInput(); // array
+    //     if (this.input !== 0) {
+    //         // get the input into an array
+    //         // split on ' ' 
+            // if (inputArray.includes('back')) {
+            //     // clear the back word and whatever is before the back word
+            //         // get index of 'back'
+            //         let index = inputArray.indexOf('back'); 
+            //         console.log('Before splice:',inputArray);
+            //         inputArray.splice(index, 1); // deletes the word back
+            // }
+    //                 console.log('After splice:', inputArray); 
+    //                 // deletes the last item off the input that came before the word back
+    //                 let inputLettersArray = inputArray[0].split(''); 
+    //                 inputLettersArray.splice(inputLettersArray.length - 1, 1); 
+                    // let newInput = inputArray.join(''); 
+                    // this.input = newInput; 
+    //                 DOM.inputElement.innerHTML = newInput; 
+    //                 // this.updateDOM(); 
+    //             // set the input to the corrected input
+    //             // DOM
+    //         }
 
-        // A, operator, B approach
-            }
+    // A, operator, B approach
+        if (!this.a) {
+            console.log('Nothing to delete'); 
+        } else if (!this.operator && this.a) {
+            // delete one character from this.a
+            let aArray = (this.a).toString().split(''); 
+            aArray.pop(); 
+            this.a = aArray.join(''); 
+            this.updateInput(); 
+            this.updateDOM(); 
+        } else if (this.operator && !this.b) {
+            // delete operator
+            let operatorArray = (this.operator).toString().trim().split(''); 
+            operatorArray.pop(); 
+            this.operator = ` ${operatorArray} `; 
+            this.updateInput(); 
+            this.updateDOM(); 
+        } else if (this.b) {
+            //delete character from this.b
+            let bArray = (this.b).toString().split(''); 
+            bArray.pop(); 
+            this.b = bArray.join(''); 
+            this.updateInput(); 
+            this.updateDOM();
         }
+        
     }
     updateInput() {
         this.input = `${this.a}${this.operator}${this.b}`;
@@ -156,7 +181,9 @@ class Button { // perhaps have a number button class that extends button, same w
         } else if (value === '-1') {
             calculator.negate(); 
             // calculator.updateInput(); 
-        } else {
+        } else if (value === ' back') {
+            calculator.back(); 
+        } else { // default 
             calculator.input += this.element.value; 
         }
         // calculator.updateInput(); 
