@@ -80,6 +80,7 @@ class Calculator {
         DOM.outputElement.innerHTML = calculator.output; 
     }
     back() {
+        // calculator.input based approach
         let inputArray = calculator.getPreppedInput(); // array
         if (this.input !== 0) {
             // get the input into an array
@@ -100,6 +101,8 @@ class Calculator {
                     // this.updateDOM(); 
                 // set the input to the corrected input
                 // DOM
+
+        // A, operator, B approach
             }
         }
     }
