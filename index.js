@@ -117,8 +117,9 @@ class Calculator {
         } else if (this.operator && !this.b) {
             // delete operator
             let operatorArray = (this.operator).toString().trim().split(''); 
+            console.log('operator: ', operatorArray); 
             operatorArray.pop(); 
-            this.operator = ` ${operatorArray} `; 
+            this.operator = ''; 
             this.updateInput(); 
             this.updateDOM(); 
         } else if (this.b) {
@@ -235,7 +236,7 @@ class NumberButton extends Button {
 
     addToAorB() {
         // if (e.target.attributes["data-type"].value === 'number') {
-            if (calculator.operator === '') {
+            if (!calculator.operator) {
                 calculator.a += this.value; 
                 console.log(calculator); 
             } else {
