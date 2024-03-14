@@ -35,8 +35,17 @@ class Calculator {
             // output = error
         }
     }
-    percent(number) {
-        return number * .01; 
+    percent() {
+        // return number * .01; 
+        if (!this.a && !this.operator && !this.b) { // empty
+            console.log('No operators to make percents'); 
+            return; 
+        } else if (this.a && this.operator === '') { // percent A
+            this.a = this.a * .01; 
+        } else if (this.b) {
+            this.b = this.b * .01; 
+        } 
+        this.updateInput(); 
     }
     addDecimal() {
         if (this.operator === '') { // no operator
@@ -141,6 +150,44 @@ class Calculator {
         DOM.outputElement.innerHTML = `${this.output}`; // why template literal?
     }
     operate() {
+        // equals button clicked
+        // already an operator and another operator clicked
+        // error handling 
+        if (!this.a || !this.operator || !this.b) { // any missing elements yields error
+            console.error('Operator missing'); 
+        }
+        // get the numbers, parse them
+        this.a = parseFloat(this.a); 
+        this.b = parseFloat(this.b); 
+        // call the operator with the two numbers
+        let trimmedOperator = this.operator.toString().trim(); 
+        console.log(trimmedOperator);
+        let answer; 
+        switch (trimmedOperator) {
+            case 'x':
+                answer = this.multiply(); 
+                break;
+            case '/':
+                answer = this.divide(); 
+                break;
+            case '+':
+                answer = this.add(); 
+                break;
+            case '-':
+                answer = this.subtract(); 
+                break;
+            default:
+              console.log(`Something went wrong...`);
+          }
+        // return the result
+        console.log('Answer:', answer); 
+        this.output = answer; 
+        // set the result as the new a
+        this.input = ''; 
+        this.a = answer; 
+        this.operator = '';
+        this.b = ''; 
+        this.updateDOM(); 
 
     }
 
@@ -182,8 +229,12 @@ class Button { // perhaps have a number button class that extends button, same w
         } else if (value === '-1') {
             calculator.negate(); 
             // calculator.updateInput(); 
-        } else if (value === ' back') {
+        } else if (value === ' back') { // need the space before back in order to remove it easily from input
             calculator.back(); 
+        } else if (value === 'equals') {
+            calculator.operate(); 
+        } else if (value === '%') {
+            calculator.percent(); 
         } else { // default 
             calculator.input += this.element.value; 
         }
@@ -257,6 +308,11 @@ class OperatorButton extends Button {
     }
 
     handleClick() {
+        if (calculator.a && calculator.operator && calculator.b) {
+            calculator.operate(); // sets this.a to be the answer of the previous operation
+            calculator.operator = this.value; 
+        }
+
         if (calculator.a === '') {
             console.log('No number chosen.'); 
             return; 
